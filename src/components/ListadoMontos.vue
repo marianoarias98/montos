@@ -19,7 +19,10 @@
           <td>{{ monto.personal }}</td>
           <td>{{ monto.patronal }}</td>
           <td>{{ monto.total }}</td>
-          <td><a @click="borrarMonto(monto.id)"><img src="../assets/Icons/DeleteIcon.svg" title="Borrar"></a></td>
+          <td>
+            <a @click="editarMontos"><img src="../assets/Icons/EditIcon.svg" title="Editar"></a>
+            <a @click="borrarMonto(monto.id)"><img src="../assets/Icons/DeleteIcon.svg" title="Borrar"></a>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -46,6 +49,10 @@ const borrarMonto = async (id) => {
   await montoStore.deleteMontos(id)
   emits('handleLoading')
   emits('getMontos')
+}
+
+const editarMontos = () =>{
+  emits('editarMontosForm');
 }
 </script>
 

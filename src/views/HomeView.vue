@@ -1,11 +1,15 @@
 <template>
   <div class="grid">
     <CrearMontosForm :conceptosList="conceptos" @getMontos="getMontos" @handleLoading="handleLoading"/>
-    <ListadoMontos :montosList="montos" @handleLoading="handleLoading" @getMontos="getMontos"/>
+    <ListadoMontos :montosList="montos" @handleLoading="handleLoading" @getMontos="getMontos" @editarMontosForm="editarMontosForm"/>
   </div>
 
   <div v-if="showLoading" class="modal">
     <Loading />
+  </div>
+
+  <div v-if="showEditarMontosForm" class="modal">
+    <EditarMontosForm :conceptos-list="conceptos" @editarMontosForm="editarMontosForm"/>
   </div>
 </template>
 
@@ -16,9 +20,11 @@ import CrearMontosForm from '../components/CrearMontosForm.vue';
 import ListadoMontos from '../components/ListadoMontos.vue';
 import useConcepto from '../stores/ConceptoStore';
 import useMonto from '../stores/MontoStore';
+import EditarMontosForm from '../components/EditarMontosForm.vue';
 
 const conceptoStore =  useConcepto(), montoStore = useMonto();
 const showLoading = ref(false)
+const showEditarMontosForm = ref(false)
 
 const conceptos = ref()
 let montos = ref([])
@@ -32,14 +38,14 @@ const handleLoading = () =>{
   showLoading.value = !showLoading.value
 }
 
-const agregarMontos = (nuevosMontos) =>{
- montos.value.push(nuevosMontos)
-}
-
 const getMontos = async () =>{
   handleLoading()
   montos.value = await montoStore.getMontos()
   handleLoading()
+}
+
+const editarMontosForm = () =>{
+  showEditarMontosForm.value =!showEditarMontosForm.value
 }
 
 </script>
