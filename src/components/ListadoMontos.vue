@@ -1,7 +1,7 @@
 <template>
   <div class="conceptos-container">
     <div class="mb-4 mt-3">
-      <h4>Listado de Montos</h4>
+      <h4>Listado de Montos: {{ props.mes }}/{{ props.anio }}</h4>
     </div>
     <table class="table">
       <thead>
@@ -20,7 +20,7 @@
           <td>{{ monto.patronal }}</td>
           <td>{{ monto.total }}</td>
           <td>
-            <a @click="editarMontos"><img src="../assets/Icons/EditIcon.svg" title="Editar"></a>
+            <a @click="editarMontos(monto.id)"><img src="../assets/Icons/EditIcon.svg" title="Editar"></a>
             <a @click="borrarMonto(monto.id)"><img src="../assets/Icons/DeleteIcon.svg" title="Borrar"></a>
           </td>
         </tr>
@@ -41,6 +41,14 @@ const props = defineProps({
   montosList: {
     type: Object,
     required: true
+  },
+  mes: {
+    type: String,
+    required: true
+  },
+  anio:{
+    type: String,
+    required: true
   }
 })
 
@@ -51,8 +59,8 @@ const borrarMonto = async (id) => {
   emits('getMontos')
 }
 
-const editarMontos = () =>{
-  emits('editarMontosForm');
+const editarMontos = (id) =>{
+  emits('editarMontosForm', id);
 }
 </script>
 

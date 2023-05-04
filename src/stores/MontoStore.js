@@ -8,7 +8,7 @@ const useMonto = defineStore('MontoStore',
       }
     },
     actions: {
-      async crearMonto(concepto_id, personal, patronal, total, mes = 5, año = 2023) {
+      async crearMonto(concepto_id, personal, patronal, total, mes, año) {
         const url = `${this.uriServer}/montos/crear`
         const rawResponse = await fetch(url, {
           method: 'POST',
@@ -29,14 +29,18 @@ const useMonto = defineStore('MontoStore',
         return response.message
       },
 
-      async getMontos() {
+      async getMontos(mes, anio) {
         const url = `${this.uriServer}/montos`
         const rawResponse = await fetch(url, {
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
-          }
+          },
+          body: JSON.stringify({
+            "mes": mes,
+            "anio": anio
+          })
         })
 
         const response = await rawResponse.json()
@@ -52,6 +56,46 @@ const useMonto = defineStore('MontoStore',
           },
           body: JSON.stringify({
             "id": id
+          })
+        })
+  
+        const response = await rawResponse.json()
+        return response.message
+      },
+
+      async getMontoByID(id) {
+        const url = `${this.uriServer}/monto`
+        const rawResponse = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            "id": id
+          })
+        })
+  
+        const response = await rawResponse.json()
+        return response
+      },
+
+      async updateMonto (id, concepto_id, personal, patronal, total) {
+        const url = `${this.uriServer}/monto/update`
+        const rawResponse = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            "id": id,
+            "concepto_id": concepto_id,
+            "personal": personal,
+            "patronal": patronal,
+            "total": total,
+            "mes": 5,
+            "año": 2023
           })
         })
   
