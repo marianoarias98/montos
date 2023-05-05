@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
   if (to.name === 'montos') {
   const mes = parseInt(to.params.mes)
   const anio = parseInt(to.params.anio)
-  if (mes >= 1 && mes <= 12 && anio >= 2022 && anio <= 2023){
+  if (mes >= 1 && mes <= 12 && anio >= 2022 && anio <= 2024){
     next()
   }else{
     alert('ERROR: el parametro mes o año no es correcto')

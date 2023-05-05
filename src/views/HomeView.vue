@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <CrearMontosForm :conceptosList="conceptos" @getMontos="getMontos" @handleLoading="handleLoading" :mes="props.mes" :anio="props.anio"/>
-    <ListadoMontos :montosList="montos" @handleLoading="handleLoading" @getMontos="getMontos" @editarMontosForm="editarMontosForm" :mes="props.mes" :anio="props.anio"/>
+    <ListadoMontos :montosList="montos.montos" @handleLoading="handleLoading" @getMontos="getMontos" @editarMontosForm="editarMontosForm" :mes="props.mes" :anio="props.anio" :sumatorias="sumatorias"/>
   </div>
 
   <div v-if="showLoading" class="modal">
@@ -27,9 +27,10 @@ const conceptoStore =  useConcepto(), montoStore = useMonto()
 const route = useRoute()
 const showLoading = ref(false)
 const showEditarMontosForm = ref(false)
+const sumatorias = ref()
 
 const conceptos = ref()
-let montos = ref([])
+const montos = ref([])
 const montoID = ref('')
 
 const props = defineProps({
@@ -51,6 +52,7 @@ const handleLoading = () =>{
 const getMontos = async () =>{
   handleLoading()
   montos.value = await montoStore.getMontos(props.mes, props.anio)
+  sumatorias.value = montos.value.sumatorias[0]
   handleLoading()
 }
 

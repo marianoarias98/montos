@@ -3,9 +3,9 @@
     <form class="form">
       <h4 class="mb-3">Editar Montos</h4>
       <div class="mb-3">
-        <label class="form-label">Detalle *</label>
+        <label class="form-label">Concepto *</label>
         <select class="form-select" v-model="concepto">
-          <option value="" disabled selected>Selecciona un detalle</option>
+          <option value="" disabled selected>Selecciona un concepto</option>
           <option v-for="concepto in props.conceptosList" :key="concepto.id" :value="concepto.id"> {{ concepto.codigo
           }} {{ concepto.nombre }}
           </option>
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, onMounted, watch } from 'vue'
+import { ref, defineEmits, onMounted, watch } from 'vue'
 import useMonto from '../stores/MontoStore';
 
 const props = defineProps({
@@ -54,7 +54,7 @@ const props = defineProps({
 })
 const emits = defineEmits()
 const montoStore = useMonto()
-const concepto = ref(''), id = ref(''), personal = ref(''), patronal = ref(''), total = ref(''), fecha = ref('')
+const concepto = ref(''), id = ref(''), personal = ref(''), patronal = ref(''), total = ref(''), fecha = ref(), mes = ref(), año = ref()
 
 onMounted(async () => {
   emits('handleLoading')
@@ -69,9 +69,9 @@ onMounted(async () => {
 
 const updateMonto = async () => {
   emits('handleLoading')
-  const [mes, anio] = fecha.value.split('-').map(value => parseInt(value))
-  const response = await montoStore.updateMonto(id.value, concepto.value, personal.value, patronal.value, total.value)
-  // console.log(mes, anio)
+  const fechaValues = fecha.value.split('-').map(value => parseInt(value))
+  mes.value = fechaValues[1], año.value = fechaValues[0];
+  const response = await montoStore.updateMonto(id.value, concepto.value, personal.value, patronal.value, total.value, mes.value, año.value)
   emits('handleLoading')
 }
 

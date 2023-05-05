@@ -24,18 +24,26 @@
             <a @click="borrarMonto(monto.id)"><img src="../assets/Icons/DeleteIcon.svg" title="Borrar"></a>
           </td>
         </tr>
+        <tr class="sumatorias" v-if="props.sumatorias !== undefined">
+          <td>Total</td>
+          <td>{{ props.sumatorias.suma_personal }}</td>
+          <td>{{ props.sumatorias.suma_patronal }}</td>
+          <td>{{ props.sumatorias.suma_total }}</td>
+          <td></td>
+        </tr>
       </tbody>
     </table>
   </div>
 </template>
 
 <script setup>
-import { defineProps, ref, defineEmits } from 'vue';
+import { ref, defineEmits, onMounted, resolveDirective } from 'vue';
 import useMonto from '../stores/MontoStore';
 
 const montoID = ref('')
 const montoStore = useMonto()
 const emits = defineEmits()
+const sumatorias = props.sumatorias
 
 const props = defineProps({
   montosList: {
@@ -46,8 +54,12 @@ const props = defineProps({
     type: String,
     required: true
   },
-  anio:{
+  anio: {
     type: String,
+    required: true
+  },
+  sumatorias: {
+    type: Object,
     required: true
   }
 })
@@ -59,7 +71,7 @@ const borrarMonto = async (id) => {
   emits('getMontos')
 }
 
-const editarMontos = (id) =>{
+const editarMontos = (id) => {
   emits('editarMontosForm', id);
 }
 </script>
@@ -73,5 +85,9 @@ const editarMontos = (id) =>{
 
 img {
   cursor: pointer;
+}
+
+.sumatorias td {
+  font-weight: 500;
 }
 </style>

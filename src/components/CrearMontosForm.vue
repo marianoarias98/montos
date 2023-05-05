@@ -2,9 +2,9 @@
   <div class="form-container">
     <form class="form">
       <div class="mb-3">
-        <label class="form-label">Detalle *</label>
+        <label class="form-label">Concepto *</label>
         <select class="form-select" v-model="concepto">
-          <option value="" disabled selected>Selecciona un detalle</option>
+          <option value="" disabled selected>Selecciona un concepto</option>
           <option v-for="concepto in props.conceptosList" :key="concepto.id" :value="concepto"> {{ concepto.codigo }} {{ concepto.nombre }}
           </option>
         </select>
@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref, watch, defineEmits, defineProps } from 'vue';
+import { ref, watch, defineEmits } from 'vue';
 import useConcepto from '../stores/ConceptoStore'
 import useMonto from '../stores/MontoStore'
 

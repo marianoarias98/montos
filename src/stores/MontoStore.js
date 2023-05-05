@@ -80,7 +80,7 @@ const useMonto = defineStore('MontoStore',
         return response
       },
 
-      async updateMonto (id, concepto_id, personal, patronal, total) {
+      async updateMonto (id, concepto_id, personal, patronal, total, mes, año) {
         
         const url = `${this.uriServer}/monto/update`
         const rawResponse = await fetch(url, {
@@ -95,8 +95,8 @@ const useMonto = defineStore('MontoStore',
             "personal": personal,
             "patronal": patronal,
             "total": total,
-            "mes": 3,
-            "año": 2023
+            "mes": mes,
+            "año": año
           })
         })
         const response = await rawResponse.json()
