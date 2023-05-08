@@ -37,7 +37,6 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, } from 'vue';
 import useMonto from '../stores/MontoStore';
 
 const montoStore = useMonto()

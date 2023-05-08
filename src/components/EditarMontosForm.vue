@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import useMonto from '../stores/MontoStore';
 
 const props = defineProps({
