@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
-    <CrearMontosForm :conceptosList="conceptos" @getMontos="getMontos" @handleLoading="handleLoading" :mes="props.mes" :anio="props.anio"/>
-    <ListadoMontos :montosList="montos.montos" @handleLoading="handleLoading" @getMontos="getMontos" @editarMontosForm="editarMontosForm" :mes="props.mes" :anio="props.anio" :sumatorias="sumatorias"/>
+    <CrearMontosForm :conceptosList="conceptos" @getMontos="getMontos" @handleLoading="handleLoading" :mes="mes" :anio="año"/>
+    <ListadoMontos :montosList="montos.montos" @handleLoading="handleLoading" @getMontos="getMontos" @editarMontosForm="editarMontosForm" :mes="mes" :anio="año" :sumatorias="sumatorias"/>
   </div>
 
   <div v-if="showLoading" class="modal">
@@ -33,16 +33,12 @@ const conceptos = ref()
 const montos = ref([])
 const montoID = ref('')
 
-const props = defineProps({
-  mes: String,
-  anio: String
-})
+const mes = route.params.mes
+const año = route.params.anio
 
 onMounted( async ()=>{
   conceptos.value = await conceptoStore.getConceptos()
   getMontos()
-  props.mes = route.params.mes
-  props.anio = route.params.anio
 })
 
 const handleLoading = () =>{
@@ -51,7 +47,7 @@ const handleLoading = () =>{
 
 const getMontos = async () =>{
   handleLoading()
-  montos.value = await montoStore.getMontos(props.mes, props.anio)
+  montos.value = await montoStore.getMontos(mes, año)
   sumatorias.value = montos.value.sumatorias[0]
   handleLoading()
 }

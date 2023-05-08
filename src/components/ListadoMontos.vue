@@ -37,16 +37,19 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, onMounted, resolveDirective } from 'vue';
+import { ref, defineEmits, } from 'vue';
 import useMonto from '../stores/MontoStore';
 
-const montoID = ref('')
 const montoStore = useMonto()
 const emits = defineEmits()
-const sumatorias = props.sumatorias
+
 
 const props = defineProps({
   montosList: {
+    type: Object,
+    required: true
+  },
+  sumatorias: {
     type: Object,
     required: true
   },
@@ -56,10 +59,6 @@ const props = defineProps({
   },
   anio: {
     type: String,
-    required: true
-  },
-  sumatorias: {
-    type: Object,
     required: true
   }
 })
