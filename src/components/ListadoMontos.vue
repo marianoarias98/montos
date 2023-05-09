@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="monto in props.montosList" :key="monto.id">
+        <tr v-for="monto in paginatedMontos" :key="monto.id">
           <td>{{ monto.codigo }} {{ monto.nombre }}</td>
           <td>{{ monto.personal }}</td>
           <td>{{ monto.patronal }}</td>
@@ -33,11 +33,21 @@
         </tr>
       </tbody>
     </table>
+    <div class="pagination mt-4" v-if="totalPages >= 2">
+      <p>Pagina {{ currentPage }} de {{ totalPages }}</p>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li :disabled="currentPage === 1" class="page-item" @click="currentPage--"><a class="page-link" href="#">Anterior</a></li>
+          <li :disabled="currentPage === totalPages" class="page-item" @click="currentPage++"><a class="page-link" href="#">Siguiente</a></li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </template>
 
 <script setup>
 import useMonto from '../stores/MontoStore';
+import { watch, ref, computed } from 'vue';
 
 const montoStore = useMonto()
 const emits = defineEmits()
@@ -45,8 +55,9 @@ const emits = defineEmits()
 
 const props = defineProps({
   montosList: {
-    type: Object,
-    required: true
+    type: Array,
+    required: true,
+    default: () => []
   },
   sumatorias: {
     type: Object,
@@ -62,6 +73,8 @@ const props = defineProps({
   }
 })
 
+const montos = ref(props.montosList)
+
 const borrarMonto = async (id) => {
   emits('handleLoading')
   await montoStore.deleteMontos(id)
@@ -72,6 +85,23 @@ const borrarMonto = async (id) => {
 const editarMontos = (id) => {
   emits('editarMontosForm', id);
 }
+
+watch(() => props.montosList, (newValue) => {
+  montos.value = newValue;
+});
+
+//pagination
+const itemsPerPage = 10;
+const currentPage = ref(1);
+
+const paginatedMontos = computed(() => {
+  const startIndex = (currentPage.value - 1 ) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  return montos.value.slice(startIndex, endIndex)
+})
+
+const totalPages = computed(() => Math.ceil(montos.value.length / itemsPerPage));
+
 </script>
 
 <style scoped>
@@ -87,5 +117,11 @@ img {
 
 .sumatorias td {
   font-weight: 500;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
