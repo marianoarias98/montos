@@ -37,8 +37,8 @@
       <p>Pagina {{ currentPage }} de {{ totalPages }}</p>
       <nav aria-label="Page navigation example">
         <ul class="pagination">
-          <li :disabled="currentPage === 1" class="page-item" @click="currentPage--"><a class="page-link" href="#">Anterior</a></li>
-          <li :disabled="currentPage === totalPages" class="page-item" @click="currentPage++"><a class="page-link" href="#">Siguiente</a></li>
+          <li class="page-item" @click="currentPage != 1 && currentPage--"><a class="page-link" href="#">Anterior</a></li>
+          <li class="page-item" @click="currentPage != totalPages && currentPage++"><a class="page-link" href="#">Siguiente</a></li>
         </ul>
       </nav>
     </div>
