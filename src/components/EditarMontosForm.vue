@@ -27,6 +27,14 @@
         <label class="form-label">Mes *</label>
         <input type="month" class="form-control" v-model="fecha">
       </div>
+      <div class="mb-3">
+        <label class="form-label">Colegio</label>
+        <select class="form-select" v-model="colegio">
+          <option value="" disabled selected>Selecciona un colegio</option>
+          <option v-for="colegio in props.colegios" :key="colegio.id" :value="colegio.id"> {{ colegio.nombre }}
+          </option>
+        </select>
+      </div>
       <div class="form-bottom mt-2">
         <div class="buttons">
           <button type="submit" class="btn btn-primary mr-2" @click.prevent="updateMonto">Editar</button>
@@ -50,11 +58,15 @@ const props = defineProps({
   ID: {
     type: Number,
     required: true
+  },
+  colegios: {
+    type: Array,
+    required: true
   }
 })
 const emits = defineEmits()
 const montoStore = useMonto()
-const concepto = ref(''), id = ref(''), personal = ref(''), patronal = ref(''), total = ref(''), fecha = ref(), mes = ref(), año = ref()
+const concepto = ref(''), id = ref(''), personal = ref(''), patronal = ref(''), total = ref(''), fecha = ref(), mes = ref(), año = ref(), colegio = ref()
 
 onMounted(async () => {
   emits('handleLoading')
@@ -63,6 +75,7 @@ onMounted(async () => {
   personal.value = monto.personal
   patronal.value = monto.patronal
   concepto.value = monto.concepto_id
+  colegio.value = monto.colegio_id
   fecha.value = `${monto.año}-${monto.mes.toString().padStart(2, '0')}`
   emits('handleLoading')
 })
@@ -71,7 +84,7 @@ const updateMonto = async () => {
   emits('handleLoading')
   const fechaValues = fecha.value.split('-').map(value => parseInt(value))
   mes.value = fechaValues[1], año.value = fechaValues[0];
-  const response = await montoStore.updateMonto(id.value, concepto.value, personal.value, patronal.value, total.value, mes.value, año.value)
+  const response = await montoStore.updateMonto(id.value, concepto.value,  colegio.value,personal.value, patronal.value, total.value, mes.value, año.value)
   emits('handleLoading')
 }
 

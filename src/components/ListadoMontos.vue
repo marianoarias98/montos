@@ -2,6 +2,7 @@
   <div class="conceptos-container">
     <div class="mb-4 mt-3">
       <h4>Listado de Montos: {{ props.mes }}/{{ props.anio }}</h4>
+      <h5>Colegio: {{ props.colegio }}</h5>
     </div>
     <table class="table">
       <thead>
@@ -68,6 +69,10 @@ const props = defineProps({
     required: true
   },
   anio: {
+    type: String,
+    required: true
+  },
+  colegio: {
     type: String,
     required: true
   }

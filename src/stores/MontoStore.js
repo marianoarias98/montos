@@ -8,7 +8,7 @@ const useMonto = defineStore('MontoStore',
       }
     },
     actions: {
-      async crearMonto(concepto_id, personal, patronal, total, mes, año) {
+      async crearMonto(concepto_id, colegio_id, personal, patronal, total, mes, año) {
         const url = `${this.uriServer}/montos/crear`
         const rawResponse = await fetch(url, {
           method: 'POST',
@@ -18,6 +18,7 @@ const useMonto = defineStore('MontoStore',
           },
           body: JSON.stringify({
             "concepto_id": concepto_id,
+            'colegio_id': colegio_id,
             "personal": personal,
             "patronal": patronal,
             "total": total,
@@ -29,7 +30,7 @@ const useMonto = defineStore('MontoStore',
         return response.message
       },
 
-      async getMontos(mes, anio) {
+      async getMontos(mes, anio, colegio_id) {
         const url = `${this.uriServer}/montos`
         const rawResponse = await fetch(url, {
           method: 'POST',
@@ -39,7 +40,8 @@ const useMonto = defineStore('MontoStore',
           },
           body: JSON.stringify({
             "mes": mes,
-            "anio": anio
+            "anio": anio,
+            "colegio_id": colegio_id
           })
         })
 
@@ -80,7 +82,7 @@ const useMonto = defineStore('MontoStore',
         return response
       },
 
-      async updateMonto (id, concepto_id, personal, patronal, total, mes, año) {
+      async updateMonto (id, concepto_id, colegio_id, personal, patronal, total, mes, año) {
         
         const url = `${this.uriServer}/monto/update`
         const rawResponse = await fetch(url, {
@@ -92,6 +94,7 @@ const useMonto = defineStore('MontoStore',
           body: JSON.stringify({
             "id": id,
             "concepto_id": concepto_id,
+            "colegio_id": colegio_id,
             "personal": personal,
             "patronal": patronal,
             "total": total,
@@ -103,8 +106,6 @@ const useMonto = defineStore('MontoStore',
         return response.message
       }
     }
-
-    
   })
 
 export default useMonto

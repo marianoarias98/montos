@@ -9,7 +9,7 @@ const router = createRouter({
       redirect: '/montos/5/2023',
     },
     {
-      path: '/montos/:mes/:anio',
+      path: '/montos/:mes/:anio/:colegio',
       name: 'montos',
       component: HomeView,
       props: true,

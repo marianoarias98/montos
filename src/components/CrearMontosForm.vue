@@ -54,6 +54,10 @@ const props = defineProps({
   anio: {
     type: String,
     required: true
+  },
+  colegio: {
+    type: String,
+    required: true
   }
 })
 
@@ -64,7 +68,7 @@ const handleSubmit = async() => {
   } else {
   
    emits('handleLoading')
-    await montoStore.crearMonto(concepto.value.id, personal.value, patronal.value, total.value, props.mes, props.anio, personal)
+    await montoStore.crearMonto(concepto.value.id, props.colegio ,personal.value, patronal.value, total.value, props.mes, props.anio, personal)
     emits('handleLoading')
     emits('getMontos')
     concepto.value = '', personal.value = '', patronal.value = '', total.value = 0
