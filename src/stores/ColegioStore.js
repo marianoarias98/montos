@@ -18,6 +18,22 @@ const useColegio = defineStore('ColegioStore', {
       })
       const response = await rawResponse.json()
       return response
+    },
+
+    async getColegioById(id) {
+      const url = `${this.uriServer}/colegio`
+      const rawResponse = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          "id": id
+        })
+      })
+      const response = await rawResponse.json()
+      return response
     }
   }
 })

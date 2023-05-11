@@ -2,7 +2,7 @@
   <div class="conceptos-container">
     <div class="mb-4 mt-3">
       <h4>Listado de Montos: {{ props.mes }}/{{ props.anio }}</h4>
-      <h5>Colegio: {{ props.colegio }}</h5>
+      <h5>{{ colegio_id }}- {{ coelgio_nombre }}</h5>
     </div>
     <table class="table">
       <thead>
@@ -48,11 +48,13 @@
 
 <script setup>
 import useMonto from '../stores/MontoStore';
-import { watch, ref, computed } from 'vue';
+import useColegio from '../stores/ColegioStore';
+import { watch, ref, computed, onMounted} from 'vue';
 
 const montoStore = useMonto()
+const colegioStore = useColegio()
 const emits = defineEmits()
-
+const colegio = ref(), colegio_id = ref(), coelgio_nombre = ref()
 
 const props = defineProps({
   montosList: {
@@ -94,6 +96,12 @@ const editarMontos = (id) => {
 watch(() => props.montosList, (newValue) => {
   montos.value = newValue;
 });
+
+onMounted(async()=>{
+  colegio.value = await colegioStore.getColegioById(props.colegio)
+  colegio_id.value = colegio.value.id
+  coelgio_nombre.value = colegio.value.nombre
+})
 
 //pagination
 const itemsPerPage = 10;

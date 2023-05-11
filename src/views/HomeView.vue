@@ -10,7 +10,7 @@
   </div>
 
   <div v-if="showEditarMontosForm" class="modal modalEdit">
-    <EditarMontosForm @handleLoading="handleLoading" :conceptos-list="conceptos" :ID="montoID" :colegios="colegios"/>
+    <EditarMontosForm @handleLoading="handleLoading" :conceptos-list="conceptos" :ID="montoID" :colegios="colegios" @ShowEditModal="ShowEditModal" @getMontos="getMontos"/>
   </div>
 </template>
 
@@ -58,8 +58,12 @@ const getMontos = async () => {
 }
 
 const editarMontosForm = (id) => {
-  showEditarMontosForm.value = !showEditarMontosForm.value
+  ShowEditModal()
   montoID.value = id
+}
+
+const ShowEditModal = () =>{
+  showEditarMontosForm.value = !showEditarMontosForm.value
 }
 
 </script>

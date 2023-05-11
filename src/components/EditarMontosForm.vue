@@ -84,14 +84,19 @@ const updateMonto = async () => {
   emits('handleLoading')
   const fechaValues = fecha.value.split('-').map(value => parseInt(value))
   mes.value = fechaValues[1], año.value = fechaValues[0];
-  const response = await montoStore.updateMonto(id.value, concepto.value,  colegio.value,personal.value, patronal.value, total.value, mes.value, año.value)
+  const response = await montoStore.updateMonto(id.value, concepto.value, colegio.value, personal.value, patronal.value, total.value, mes.value, año.value)
   emits('handleLoading')
+  closeModal()
 }
 
 watch([personal, patronal], () => {
   total.value = parseFloat(personal.value) + parseFloat(patronal.value)
 })
 
+const closeModal = () => {
+  emits('ShowEditModal')
+  emits('getMontos')
+}
 
 </script>
 
