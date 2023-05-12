@@ -6,7 +6,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/montos/5/2023',
+      redirect: '/montos/5/2023/2',
     },
     {
       path: '/montos/:mes/:anio/:colegio',

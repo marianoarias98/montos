@@ -1,8 +1,13 @@
 <template>
   <div class="conceptos-container">
-    <div class="mb-4 mt-3">
-      <h4>Listado de Montos: {{ props.mes }}/{{ props.anio }}</h4>
-      <h5>{{ colegio_id }}- {{ coelgio_nombre }}</h5>
+    <div class="mb-4 mt-3 d-flex justify-content-between align-items-center">
+      <div>
+        <h4>Listado de Montos: {{ props.mes }}/{{ props.anio }}</h4>
+        <h5>{{ colegio_id }}- {{ coelgio_nombre }}</h5>
+      </div>
+      <div>
+        <input type="text" class="form-control" placeholder="Buscar" v-model="search">
+      </div>
     </div>
     <table class="table">
       <thead>
@@ -38,8 +43,10 @@
       <p>Pagina {{ currentPage }} de {{ totalPages }}</p>
       <nav aria-label="Page navigation example">
         <ul class="pagination">
-          <li class="page-item" @click="currentPage != 1 && currentPage--"><a class="page-link" href="#">Anterior</a></li>
-          <li class="page-item" @click="currentPage != totalPages && currentPage++"><a class="page-link" href="#">Siguiente</a></li>
+          <li class="page-item" :class="{ disabled: currentPage === 1 }" @click="currentPage != 1 && currentPage--"><a
+              class="page-link" href="#">Anterior</a></li>
+          <li class="page-item" :class="{ disabled: currentPage === totalPages }"
+            @click="currentPage != totalPages && currentPage++"><a class="page-link" href="#">Siguiente</a></li>
         </ul>
       </nav>
     </div>
@@ -49,13 +56,14 @@
 <script setup>
 import useMonto from '../stores/MontoStore';
 import useColegio from '../stores/ColegioStore';
-import { watch, ref, computed, onMounted} from 'vue';
+import { watch, ref, computed, onMounted } from 'vue';
 
-const montoStore = useMonto()
-const colegioStore = useColegio()
-const emits = defineEmits()
-const colegio = ref(), colegio_id = ref(), coelgio_nombre = ref()
-
+const montoStore = useMonto();
+const colegioStore = useColegio();
+const emits = defineEmits();
+const colegio = ref();
+const colegio_id = ref();
+const coelgio_nombre = ref();
 const props = defineProps({
   montosList: {
     type: Array,
@@ -78,45 +86,54 @@ const props = defineProps({
     type: String,
     required: true
   }
-})
+});
 
-const montos = ref(props.montosList)
+const montos = ref(props.montosList);
+const search = ref('');
+const currentPage = ref(1);
+const itemsPerPage = 8;
 
 const borrarMonto = async (id) => {
-  emits('handleLoading')
-  await montoStore.deleteMontos(id)
-  emits('handleLoading')
-  emits('getMontos')
-}
+  emits('handleLoading');
+  await montoStore.deleteMontos(id);
+  emits('handleLoading');
+  emits('getMontos');
+};
 
 const editarMontos = (id) => {
   emits('editarMontosForm', id);
-}
+};
 
 watch(() => props.montosList, (newValue) => {
   montos.value = newValue;
+  currentPage.value = 1; // Reset current page when montosList changes
 });
 
-onMounted(async()=>{
-  colegio.value = await colegioStore.getColegioById(props.colegio)
-  colegio_id.value = colegio.value.id
-  coelgio_nombre.value = colegio.value.nombre
-})
+onMounted(async () => {
+  colegio.value = await colegioStore.getColegioById(props.colegio);
+  colegio_id.value = colegio.value.id;
+  coelgio_nombre.value = colegio.value.nombre;
+});
 
-//pagination
-const itemsPerPage = 10;
-const currentPage = ref(1);
+// Filtrado de Montos por búsqueda
+const filteredMontos = computed(() => {
+  if (!search.value) {
+    return montos.value;
+  }
+  const searchTerm = search.value.toLowerCase();
+  return montos.value.filter(monto => monto.nombre.toLowerCase().includes(searchTerm));
+});
 
+// Paginación
 const paginatedMontos = computed(() => {
-  const startIndex = (currentPage.value - 1 ) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  return montos.value.slice(startIndex, endIndex)
-})
+  const startIndex = (currentPage.value - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  return filteredMontos.value.slice(startIndex, endIndex);
+});
 
-const totalPages = computed(() => Math.ceil(montos.value.length / itemsPerPage));
+const totalPages = computed(() => Math.ceil(filteredMontos.value.length / itemsPerPage));
 
 </script>
-
 <style scoped>
 .conceptos-container {
   background-color: white;
