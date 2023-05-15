@@ -2,7 +2,7 @@
   <div class="conceptos-container">
     <div class="mb-4 mt-3 d-flex justify-content-between align-items-center">
       <div>
-        <h4>Listado de Montos: {{ formattedMonth }} {{ props.anio }}</h4>
+        <h4>Listado : {{ formattedMonth }} {{ props.anio }}</h4>
         <h5>{{ colegio_id }}- {{ coelgio_nombre }}</h5>
       </div>
       <div>
@@ -94,16 +94,16 @@ const currentPage = ref(1);
 const itemsPerPage = 8;
 
 const borrarMonto = async (id) => {
-  emits('handleLoading');
   const confirmacion = window.confirm('¿Estás seguro/a de que desea borrar los montos?');
-
+  
   if (confirmacion) {
+    emits('handleLoading');
     await montoStore.deleteMontos(id);
     emits('getMontos');
   }
-
   emits('handleLoading');
-}
+  }
+
 
 const editarMontos = (id) => {
   emits('editarMontosForm', id);
