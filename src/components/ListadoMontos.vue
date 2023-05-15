@@ -91,14 +91,19 @@ const props = defineProps({
 const montos = ref(props.montosList);
 const search = ref('');
 const currentPage = ref(1);
-const itemsPerPage = 10;
+const itemsPerPage = 8;
 
 const borrarMonto = async (id) => {
   emits('handleLoading');
-  await montoStore.deleteMontos(id);
+  const confirmacion = window.confirm('¿Estás seguro/a de que desea borrar los montos?');
+
+  if (confirmacion) {
+    await montoStore.deleteMontos(id);
+    emits('getMontos');
+  }
+
   emits('handleLoading');
-  emits('getMontos');
-};
+}
 
 const editarMontos = (id) => {
   emits('editarMontosForm', id);
@@ -107,13 +112,13 @@ const editarMontos = (id) => {
 watch(() => props.montosList, (newValue) => {
   montos.value = newValue;
   currentPage.value = 1; // Reset current page when montosList changes
-});
+})
 
 onMounted(async () => {
   colegio.value = await colegioStore.getColegioById(props.colegio);
   colegio_id.value = colegio.value.id;
   coelgio_nombre.value = colegio.value.nombre;
-});
+})
 
 // Filtrado de Montos por búsqueda
 const filteredMontos = computed(() => {
@@ -122,14 +127,14 @@ const filteredMontos = computed(() => {
   }
   const searchTerm = search.value.toLowerCase();
   return montos.value.filter(monto => monto.nombre.toLowerCase().includes(searchTerm));
-});
+})
 
 // Paginación
 const paginatedMontos = computed(() => {
   const startIndex = (currentPage.value - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   return filteredMontos.value.slice(startIndex, endIndex);
-});
+})
 
 const totalPages = computed(() => Math.ceil(filteredMontos.value.length / itemsPerPage));
 
@@ -137,8 +142,9 @@ const totalPages = computed(() => Math.ceil(filteredMontos.value.length / itemsP
 const formatNumber = (number) => {
   const formattedNumber = new Intl.NumberFormat('es-ES').format(number);
   return `$${formattedNumber}`;
-};
+}
 </script>
+
 <style scoped>
 .conceptos-container {
   background-color: white;
@@ -160,4 +166,3 @@ img {
   justify-content: space-between;
 }
 </style>
-cd

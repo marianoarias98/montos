@@ -11,8 +11,7 @@ const router = createRouter({
     {
       path: '/montos/:mes/:anio/:colegio',
       name: 'montos',
-      component: HomeView,
-      props: true,
+      component: HomeView
     },
     {
       path: '/:pathMatch(.*)*',

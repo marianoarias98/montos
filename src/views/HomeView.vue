@@ -29,9 +29,9 @@ const conceptoStore = useConcepto(), montoStore = useMonto(), colegioStore = use
 const route = useRoute()
 const showLoading = ref(false)
 const showEditarMontosForm = ref(false)
-const sumatorias = ref()
+const sumatorias = ref({})
 
-const conceptos = ref()
+const conceptos = ref({})
 const colegios = ref()
 const montos = ref([])
 const montoID = ref('')

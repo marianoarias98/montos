@@ -38,7 +38,7 @@
       <div class="form-bottom mt-2">
         <div class="buttons">
           <button type="submit" class="btn btn-primary mr-2" @click.prevent="updateMonto">Editar</button>
-          <button class="btn btn-secondary" @click="closeModal">Cancelar</button>
+          <button class="btn btn-secondary" @click.prevent="closeModal">Cancelar</button>
         </div>
         <p>* Campos obligarorios</p>
       </div>
@@ -81,12 +81,16 @@ onMounted(async () => {
 })
 
 const updateMonto = async () => {
-  emits('handleLoading')
+  const confirmacion = window.confirm('¿Estás seguro/a de que desea actualizar los montos?');
+
+  if(confirmacion) {
   const fechaValues = fecha.value.split('-').map(value => parseInt(value))
   mes.value = fechaValues[1], año.value = fechaValues[0];
+  emits('handleLoading')
   const response = await montoStore.updateMonto(id.value, concepto.value, colegio.value, personal.value, patronal.value, total.value, mes.value, año.value)
   emits('handleLoading')
   closeModal()
+  }
 }
 
 watch([personal, patronal], () => {

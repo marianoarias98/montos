@@ -63,12 +63,17 @@ const props = defineProps({
 })
 
 const validateForm = () => {
-  if (personal.value === '') personal.value = 0
-  if (patronal.value === '') patronal.value = 0
   if (!concepto.value) {
     alert('El campo "concepto" es obligatorio')
     return false
   }
+
+  if(!personal.value && !patronal.value){
+    alert('Debe completar al menos un monto')
+    return false
+  }
+  if (personal.value === '') personal.value = 0
+  if (patronal.value === '') patronal.value = 0
   return true
 }
 
