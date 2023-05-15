@@ -3,9 +3,10 @@
     <form class="form">
       <div class="mb-3">
         <label class="form-label">Concepto *</label>
-        <select class="form-select" v-model="concepto">
+        <select class="form-select" v-model="concepto" required>
           <option value="" disabled selected>Selecciona un concepto</option>
-          <option v-for="concepto in props.conceptosList" :key="concepto.id" :value="concepto"> {{ concepto.codigo }} {{ concepto.nombre }}
+          <option v-for="concepto in props.conceptosList" :key="concepto.id" :value="concepto"> {{ concepto.codigo }} {{
+            concepto.nombre }}
           </option>
         </select>
       </div>
@@ -61,18 +62,26 @@ const props = defineProps({
   }
 })
 
-
-const handleSubmit = async() => {
-  if (concepto.value == '' || personal.value == '' || patronal.value == '' || total.value == 0) {
-    alert('Todos los campos son obligatorios')
-  } else {
-  
-   emits('handleLoading')
-    await montoStore.crearMonto(concepto.value.id, props.colegio ,personal.value, patronal.value, total.value, props.mes, props.anio, personal)
-    emits('handleLoading')
-    emits('getMontos')
-    concepto.value = '', personal.value = '', patronal.value = '', total.value = 0
+const validateForm = () => {
+  if (personal.value === '') personal.value = 0
+  if (patronal.value === '') patronal.value = 0
+  if (!concepto.value) {
+    alert('El campo "concepto" es obligatorio')
+    return false
   }
+  return true
+}
+
+const handleSubmit = async () => {
+
+  if (!validateForm()) {
+    return
+  }
+  emits('handleLoading')
+  await montoStore.crearMonto(concepto.value.id, props.colegio, personal.value, patronal.value, total.value, props.mes, props.anio, personal)
+  emits('handleLoading')
+  emits('getMontos')
+  concepto.value = '', personal.value = '', patronal.value = '', total.value = 0
 }
 
 </script>

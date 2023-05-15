@@ -2,11 +2,11 @@
   <div class="conceptos-container">
     <div class="mb-4 mt-3 d-flex justify-content-between align-items-center">
       <div>
-        <h4>Listado de Montos: {{ props.mes }}/{{ props.anio }}</h4>
+        <h4>Listado de Montos: {{ props.mes }} de {{ props.anio }}</h4>
         <h5>{{ colegio_id }}- {{ coelgio_nombre }}</h5>
       </div>
       <div>
-        <input type="text" class="form-control" placeholder="Buscar" v-model="search">
+        <input type="text" class="form-control" placeholder="Buscar Concepto" v-model="search">
       </div>
     </div>
     <table class="table">
@@ -22,9 +22,9 @@
       <tbody>
         <tr v-for="monto in paginatedMontos" :key="monto.id">
           <td>{{ monto.codigo }} {{ monto.nombre }}</td>
-          <td>{{ monto.personal }}</td>
-          <td>{{ monto.patronal }}</td>
-          <td>{{ monto.total }}</td>
+          <td>{{ formatNumber(monto.personal) }}</td>
+          <td>{{ formatNumber(monto.patronal) }}</td>
+          <td>{{ formatNumber(monto.total) }}</td>
           <td>
             <a @click="editarMontos(monto.id)"><img src="../assets/Icons/EditIcon.svg" title="Editar"></a>
             <a @click="borrarMonto(monto.id)"><img src="../assets/Icons/DeleteIcon.svg" title="Borrar"></a>
@@ -32,9 +32,9 @@
         </tr>
         <tr class="sumatorias" v-if="props.sumatorias !== undefined">
           <td>Total</td>
-          <td>{{ props.sumatorias.suma_personal }}</td>
-          <td>{{ props.sumatorias.suma_patronal }}</td>
-          <td>{{ props.sumatorias.suma_total }}</td>
+          <td>{{ formatNumber(props.sumatorias.suma_personal) }}</td>
+          <td>{{ formatNumber(props.sumatorias.suma_patronal) }}</td>
+          <td>{{ formatNumber(props.sumatorias.suma_total) }}</td>
           <td></td>
         </tr>
       </tbody>
@@ -91,7 +91,7 @@ const props = defineProps({
 const montos = ref(props.montosList);
 const search = ref('');
 const currentPage = ref(1);
-const itemsPerPage = 8;
+const itemsPerPage = 10;
 
 const borrarMonto = async (id) => {
   emits('handleLoading');
@@ -133,6 +133,11 @@ const paginatedMontos = computed(() => {
 
 const totalPages = computed(() => Math.ceil(filteredMontos.value.length / itemsPerPage));
 
+//format number
+const formatNumber = (number) => {
+  const formattedNumber = new Intl.NumberFormat('es-ES').format(number);
+  return `$${formattedNumber}`;
+};
 </script>
 <style scoped>
 .conceptos-container {
@@ -155,3 +160,4 @@ img {
   justify-content: space-between;
 }
 </style>
+cd
