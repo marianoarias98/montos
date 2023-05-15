@@ -2,7 +2,7 @@
   <div class="conceptos-container">
     <div class="mb-4 mt-3 d-flex justify-content-between align-items-center">
       <div>
-        <h4>Listado de Montos: {{ props.mes }} de {{ props.anio }}</h4>
+        <h4>Listado de Montos: {{ formattedMonth }} {{ props.anio }}</h4>
         <h5>{{ colegio_id }}- {{ coelgio_nombre }}</h5>
       </div>
       <div>
@@ -143,6 +143,26 @@ const formatNumber = (number) => {
   const formattedNumber = new Intl.NumberFormat('es-ES').format(number);
   return `$${formattedNumber}`;
 }
+
+const formatMonth = (month) =>{
+  const months = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+  ]
+  return `${months[month-1]}`
+}
+
+const formattedMonth = formatMonth(props.mes)
 </script>
 
 <style scoped>

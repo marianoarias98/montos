@@ -28,7 +28,7 @@
         <input type="month" class="form-control" v-model="fecha">
       </div>
       <div class="mb-3">
-        <label class="form-label">Colegio</label>
+        <label class="form-label">Colegio *</label>
         <select class="form-select" v-model="colegio">
           <option value="" disabled selected>Selecciona un colegio</option>
           <option v-for="colegio in props.colegios" :key="colegio.id" :value="colegio.id"> {{ colegio.nombre }}
@@ -40,7 +40,7 @@
           <button type="submit" class="btn btn-primary mr-2" @click.prevent="updateMonto">Editar</button>
           <button class="btn btn-secondary" @click.prevent="closeModal">Cancelar</button>
         </div>
-        <p>* Campos obligarorios</p>
+        <p>* Campos obligatorios</p>
       </div>
     </form>
   </div>
