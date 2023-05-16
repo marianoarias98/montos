@@ -100,10 +100,9 @@ const borrarMonto = async (id) => {
     emits('handleLoading');
     await montoStore.deleteMontos(id);
     emits('getMontos');
+    emits('handleLoading');
   }
-  emits('handleLoading');
   }
-
 
 const editarMontos = (id) => {
   emits('editarMontosForm', id);
