@@ -51,12 +51,17 @@
       </nav>
     </div>
   </div>
-</template>
 
+  <div class="modal" v-if="showAlertModal">
+    <AlertModal :title="'Borrar Montos'" :message="'Desea Realmente borrar los Montos?'" :isAlert="true"
+      @hideAlert="showModal" v-model="confirmacion" />
+  </div>
+</template>
 <script setup>
 import useMonto from '../stores/MontoStore';
 import useColegio from '../stores/ColegioStore';
 import { watch, ref, computed, onMounted } from 'vue';
+import AlertModal from './AlertModal.vue';
 
 const montoStore = useMonto();
 const colegioStore = useColegio();
@@ -64,6 +69,7 @@ const emits = defineEmits();
 const colegio = ref();
 const colegio_id = ref();
 const coelgio_nombre = ref();
+const showAlertModal = ref(false);
 const props = defineProps({
   montosList: {
     type: Array,
@@ -90,19 +96,24 @@ const props = defineProps({
 
 const montos = ref(props.montosList);
 const search = ref('');
-const currentPage = ref(1);
-const itemsPerPage = 8;
+
+const showModal = () => {
+  showAlertModal.value = !showAlertModal.value;
+}
 
 const borrarMonto = async (id) => {
   const confirmacion = window.confirm('¿Estás seguro/a de que desea borrar los montos?');
-  
+  // showModal()
+
+  console.log(confirmacion);
+
   if (confirmacion) {
     emits('handleLoading');
     await montoStore.deleteMontos(id);
     emits('getMontos');
     emits('handleLoading');
   }
-  }
+}
 
 const editarMontos = (id) => {
   emits('editarMontosForm', id);
@@ -119,6 +130,8 @@ onMounted(async () => {
   coelgio_nombre.value = colegio.value.nombre;
 })
 
+
+
 // Filtrado de Montos por búsqueda
 const filteredMontos = computed(() => {
   if (!search.value) {
@@ -129,6 +142,9 @@ const filteredMontos = computed(() => {
 })
 
 // Paginación
+const currentPage = ref(1);
+const itemsPerPage = 8;
+
 const paginatedMontos = computed(() => {
   const startIndex = (currentPage.value - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -143,7 +159,7 @@ const formatNumber = (number) => {
   return `$${formattedNumber}`;
 }
 
-const formatMonth = (month) =>{
+const formatMonth = (month) => {
   const months = [
     'Enero',
     'Febrero',
@@ -158,7 +174,7 @@ const formatMonth = (month) =>{
     'Noviembre',
     'Diciembre'
   ]
-  return `${months[month-1]}`
+  return `${months[month - 1]}`
 }
 
 const formattedMonth = formatMonth(props.mes)

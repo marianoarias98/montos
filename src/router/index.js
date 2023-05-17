@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import IngresosView from '../views/IngresosView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,8 +15,9 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/:pathMatch(.*)*',
-      redirect: '/'
+      path: '/ingresos',
+      name: 'ingresos',
+      component: IngresosView
     }
   ]
 })
@@ -30,6 +32,8 @@ router.beforeEach((to, from, next) => {
     alert('ERROR: el parametro mes o año no es correcto')
     next(from)
   }
+}else{
+  next()
 }
 })
 
