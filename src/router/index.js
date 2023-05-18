@@ -15,7 +15,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/ingresos',
+      path: '/ingresos/:mes/:anio/:colegio',
       name: 'ingresos',
       component: IngresosView
     }
