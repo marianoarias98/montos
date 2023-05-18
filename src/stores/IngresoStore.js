@@ -23,6 +23,26 @@ const useIngreso = defineStore('IngresoStore', {
       })
       const response = await rawResponse.json()
       return response
+    },
+
+    async crearIngreso (aporte, spep, mes, año, colegio_id) {
+      const url = `${this.uriServer}/ingreso/crear`
+      const rawResponse = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          "monto_aporte": aporte,
+          "monto_spep": spep,
+          "mes": mes,
+          "anio": año,
+          "colegio_id": colegio_id
+        })
+      })
+      const response = await rawResponse.json()
+      return response
     }
   }
 })

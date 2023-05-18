@@ -2,12 +2,12 @@
   <div class="Ingresos-Table">
     <div class="d-flex justify-content-between">
       <h4>Ingreso mensual de *Nombre de Colegio*: </h4>
-      <div v-if="lenght">
-        <a><img src="../../assets/Icons/EditIcon.svg" title="Editar"></a>
+      <div v-if="!props.isEmpty">
+        <a @click="showEditForm"><img src="../../assets/Icons/EditIcon.svg" title="Editar"></a>
       </div>
     </div>
   
-    <table v-if="lenght" class="table mt-4">
+    <table v-if="!props.isEmpty" class="table mt-4">
       <thead>
         <tr>
           <th scope="col">Concepto</th>
@@ -16,7 +16,7 @@
       </thead>
       <tbody>
         <tr>
-          <th scope="row">Monto del Aporte y/o recibidos con cargos a la cuota Nº {{mes}}/{{ año }}</th>
+          <th scope="row">Monto del Aporte y/o recibidos con cargos a la cuota Nº {{props.mes}}/{{ props.año }}</th>
           <td>{{ ingresos.monto_aporte }}</td>
         </tr>
         <tr>
@@ -39,29 +39,38 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import useIngreso from '../../stores/IngresoStore';
+import { ref, defineProps, watch } from 'vue';
 
-const ingresoStore = useIngreso()
+const emits = defineEmits()
 
-import { useRoute } from 'vue-router';
-import { onMounted } from 'vue';
-import useIngresos from '../../stores/IngresoStore/'
-
-const route = useRoute()
-const IngresoStore = useIngresos()
-
-const mes = route.params.mes
-const año = route.params.anio
-const colegio = route.params.colegio
-
-const ingresos = ref(null)
-const lenght = ref(0)
-onMounted(async () =>{
-  ingresos.value = await IngresoStore.getIngresos(mes, año, colegio)
-  lenght.value = Object.keys(ingresos.value).length;
+const props = defineProps({
+  ingresosList: {
+    type: Object,
+    required: true
+  },
+  isEmpty: {
+    type: Boolean,
+    required: true
+  },
+  mes:{
+    type: String,
+    required: true
+  },
+  año: {
+    type: String,
+    required: true
+  }
 })
 
+const ingresos = ref(props.ingresosList)
+
+watch(() => props.ingresosList, (newValue) => {
+  ingresos.value = newValue
+}) 
+
+const showEditForm = () => {
+  emits('showForm')
+}
 </script>
 
 <style scoped>
