@@ -22,7 +22,6 @@
       <div class="mb-3">
         <label class="form-label">Monto Total: <span v-if="total != 0">${{ total }}</span></label>
       </div>
-
       <div class="mb-3">
         <label class="form-label">Mes *</label>
         <input type="month" class="form-control" v-model="fecha">

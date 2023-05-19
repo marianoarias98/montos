@@ -1,7 +1,7 @@
 <template>
   <div class="Ingresos-Table">
     <div class="d-flex justify-content-between">
-      <h4>Ingreso mensual de *Nombre de Colegio*: </h4>
+      <h4>{{ ingresos.nombre }} </h4>
       <div v-if="!props.isEmpty">
         <a @click="showEditForm"><img src="../../assets/Icons/EditIcon.svg" title="Editar"></a>
       </div>
@@ -23,7 +23,6 @@
           <th scope="row">Monto recibido de SPEP</th>
           <td>{{ ingresos.monto_spep }}</td>
         </tr>
-        <tr></tr>
         <!-- <tr>
           <th scope="row">Porcentage de aporte estatal:</th>
           <td>100%</td>
@@ -39,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 const emits = defineEmits()
 
@@ -66,6 +65,7 @@ const ingresos = ref(props.ingresosList)
 
 watch(() => props.ingresosList, (newValue) => {
   ingresos.value = newValue
+  console.log(ingresos.value)
 }) 
 
 const showEditForm = () => {

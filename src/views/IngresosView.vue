@@ -6,7 +6,7 @@
     </div>
 
     <div v-if="showEditForm" class="modal">
-      <EditarIngresosForm />
+      <EditarIngresosForm :ingresosList="ingresos" @hideForm="handleEditForm" @showLoading="handleLoading"/>
     </div>
 
     <div v-if="showLoading" class="modal">
@@ -37,7 +37,7 @@ const ingresos = ref({})
 const showLoading = ref(false)
 const showEditForm = ref(false)
 
-onMounted(async () => {
+onMounted(() => {
   getIngresos()
 })
 
@@ -50,7 +50,6 @@ const getIngresos = async () => {
     const grid = document.getElementsByClassName('grid')[0];
     grid.classList.add('inline');
   }
-
   handleLoading()
 }
 

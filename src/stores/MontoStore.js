@@ -60,7 +60,7 @@ const useMonto = defineStore('MontoStore',
             "id": id
           })
         })
-  
+
         const response = await rawResponse.json()
         return response.message
       },
@@ -77,13 +77,13 @@ const useMonto = defineStore('MontoStore',
             "id": id
           })
         })
-  
+
         const response = await rawResponse.json()
         return response
       },
 
-      async updateMonto (id, concepto_id, colegio_id, personal, patronal, total, mes, año) {
-        
+      async updateMonto(id, concepto_id, colegio_id, personal, patronal, total, mes, año) {
+
         const url = `${this.uriServer}/monto/actualizar`
         const rawResponse = await fetch(url, {
           method: 'POST',
@@ -104,6 +104,24 @@ const useMonto = defineStore('MontoStore',
         })
         const response = await rawResponse.json()
         return response.message
+      },
+
+      async getAllMontos(mes, año) {
+        const url = `${this.uriServer}/montos/listado`
+        const rawResponse = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            "mes": mes,
+            "año": año,
+          })
+        })
+
+        const response = await rawResponse.json()
+        return response
       }
     }
   })
