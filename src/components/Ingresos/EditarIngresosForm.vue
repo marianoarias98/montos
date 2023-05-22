@@ -23,7 +23,7 @@
       </div>
       <div class="form-bottom mt-2">
         <div class="buttons">
-          <button type="submit" class="btn btn-primary mr-2">Editar</button>
+          <button type="submit" class="btn btn-primary mr-2" @click.prevent="updateIngresos">Editar</button>
           <button class="btn btn-secondary" @click.prevent="hideForm">Cancelar</button>
         </div>
         <p>* Campos obligatorios</p>
@@ -35,8 +35,10 @@
 <script setup>
 import { ref, onMounted, defineEmits } from 'vue'
 import useColegio from '../../stores/ColegioStore';
+import useIngreso from '../../stores/IngresoStore';
 
 const colegioStore = useColegio()
+const ingresoStore = useIngreso()
 const emits = defineEmits()
 
 const props = defineProps({
@@ -51,6 +53,8 @@ const spep = ref()
 const fecha = ref()
 const colegio = ref()
 const colegios = ref()
+const mes = ref()
+const año = ref()
 
 onMounted(async () => {
   emits('showLoading')
@@ -64,6 +68,14 @@ onMounted(async () => {
 
 const hideForm = () =>{
   emits('hideForm')
+}
+
+const updateIngresos = async () => {
+  const fechaValues = fecha.value.split('-').map(value => parseInt(value))
+  mes.value = fechaValues[1], año.value = fechaValues[0];
+  const response = await ingresoStore.updateIngreso(props.ingresosList.id, aporte.value, spep.value, mes.value, año.value, colegio.value)
+  emits('reload')
+  hideForm()
 }
 </script>
 

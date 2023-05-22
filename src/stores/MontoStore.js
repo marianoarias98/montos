@@ -84,7 +84,7 @@ const useMonto = defineStore('MontoStore',
 
       async updateMonto(id, concepto_id, colegio_id, personal, patronal, total, mes, año) {
 
-        const url = `${this.uriServer}/monto/actualizar`
+        const url = `${this.uriServer}/montos/actualizar`
         const rawResponse = await fetch(url, {
           method: 'POST',
           headers: {

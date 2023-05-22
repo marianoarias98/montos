@@ -43,6 +43,27 @@ const useIngreso = defineStore('IngresoStore', {
       })
       const response = await rawResponse.json()
       return response
+    },
+
+    async updateIngreso (id, aporte, spep, mes, año, colegio_id) {
+      const url = `${this.uriServer}/ingreso/actualizar`
+      const rawResponse = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          "id": id,
+          "monto_aporte": aporte,
+          "monto_spep": spep,
+          "mes": mes,
+          "anio": año,
+          "colegio_id": colegio_id
+        })
+      })
+      const response = await rawResponse.json()
+      return response
     }
   }
 })

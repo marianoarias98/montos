@@ -6,7 +6,7 @@
     </div>
 
     <div v-if="showEditForm" class="modal">
-      <EditarIngresosForm :ingresosList="ingresos" @hideForm="handleEditForm" @showLoading="handleLoading"/>
+      <EditarIngresosForm :ingresosList="ingresos" @hideForm="handleEditForm" @showLoading="handleLoading" @reload="getIngresos"/>
     </div>
 
     <div v-if="showLoading" class="modal">
